@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <style>
+        body {
+            background: white;
+        }
+      #container-one {
+        font-family:monospace;
+        font-weight:bold;
+         border: 5px solid white;
+         margin-bottom: 10px;
+      }
+        .container {
+           height: 100px;
+            width: 100px;
+            background: red;
+        }
+        #giphy-input {
+            margin-top: 3px;
+            font-size: 25px;
+            height: 40px;
+            border: 3px solid #8096ba;
+        }
+        .button {
+            height: 40px;
+            font-size: 12pt;
+        }
+    </style>
+  </head>
+
+  <body>
+
+    <input type="text" id="giphy-input"/>
+
+      <button id="submit-button" class="button">
+          Submit
+      </button>
+
+    <div id="results" >
+
+      </div>
+
+      <script
+                src="https://code.jquery.com/jquery-3.1.1.min.js"
+                integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+                crossorigin="anonymous"></script>
+
+    <script>
+$(document).ready(function() {
+        var $results = $("#results"); // returns the results element wrapped with jquery
+        var $button = $(".button");
+        var $input = $("#giphy-input");
+        $button.on("click", function () {
+// clears the previous results at the beginning of the function.
+          $results.html('');
+            var searchQuery = $input.val();
+            var url = "http://api.giphy.com/v1/gifs/search?q=" + searchQuery + "&api_key=dc6zaTOxFJmzC";
+            $.get(url, function (response) {
+                let i = 0;
+// loop posts all results on the same page
+                for (i = 0; i < response.data.length; i ++) {
+                  var gif = response.data[i].images.fixed_height.url;
+                  var gifImage = $('<img src="' + gif + '" />');
+                  $results.append(gifImage);
+              }
+// resets the input at the end of the function
+                $input.val('');
+            })
+        })
+        })
+    </script>
+
+  </body>
+</html>
